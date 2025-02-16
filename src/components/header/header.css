@@ -1,0 +1,23 @@
+.header_components {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.button_search,
+.button_rated {
+  all: unset;
+  padding-bottom: 12px;
+  color: rgb(103, 103, 103);
+  border-bottom: 2px solid rgb(103, 103, 103);
+}
+button.active_button {
+  color: #1890ff;
+  border-bottom: 2px solid #1890ff;
+}
+.buttons {
+  display: flex;
+  margin-top: 15px;
+  justify-content: center;
+  margin-bottom: 27px;
+  gap: 10px;
+}

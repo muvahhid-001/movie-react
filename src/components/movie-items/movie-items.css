@@ -1,0 +1,35 @@
+img {
+  width: 183px;
+  height: 279px;
+  object-fit: cover;
+}
+.movie_items {
+  width: 446px;
+  padding-right: 15px;
+  height: 279px;
+  box-shadow: 2px 0 10px rgba(83, 82, 82, 0.5);
+  list-style: none;
+}
+.items_div {
+  display: flex;
+  gap: 15px;
+}
+.movie_p {
+  font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  width: 228px;
+  text-overflow: ellipsis;
+  line-height: 22px;
+  max-height: calc(22px * 8);
+}
+.movie_title {
+  font-size: 22px;
+}
+.movie_date {
+  color: #827e7e;
+  font-size: 14px;
+}

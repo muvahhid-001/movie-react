@@ -10,7 +10,7 @@ const FetchApi = () => {
 
   fetch(
     "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
-    options
+    options,
   )
     .then((response) => response.json())
     .then((data) => {

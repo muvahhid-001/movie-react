@@ -4,7 +4,6 @@ import { Alert } from "antd";
 import "./movie-list.css";
 
 const MovieList = ({ movies, error }) => {
-  let as = 0;
   if (error.status) {
     return (
       <Alert

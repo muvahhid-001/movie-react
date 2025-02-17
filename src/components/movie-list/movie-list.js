@@ -1,14 +1,21 @@
 import MovieItems from "../movie-items/movie-items";
+import SpinLoad from "../spin/spin";
+import { Alert } from "antd";
 import "./movie-list.css";
 
-const MovieList = ({ movies }) => {
-  if (!movies || !movies.results) {
+const MovieList = ({ movies, error }) => {
+  if (error.status) {
     return (
-      <div className="loading_div">
-        <p className="loading">Loading...</p>
-        <p className="loading_warn">Maybe: Vpn no connect!</p>
-      </div>
+      <Alert
+        message="Error"
+        description={error.message.error.message}
+        type="error"
+        showIcon
+      />
     );
+  }
+  if (!movies || !movies.results) {
+    return <SpinLoad />;
   }
   return (
     <ul className="movie_list">

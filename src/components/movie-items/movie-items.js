@@ -2,16 +2,7 @@ import { format, parseISO } from "date-fns";
 import "./movie-items.css";
 
 const MovieItems = ({ movie }) => {
-  console.log(movie);
-
-  const {
-    id,
-    backdrop_path,
-    original_title,
-    overview,
-    release_date,
-    genre_ids,
-  } = movie;
+  const { id, backdrop_path, original_title, overview, release_date } = movie;
 
   return (
     <li className="movie_items" key={id}>
@@ -23,6 +14,9 @@ const MovieItems = ({ movie }) => {
         />
         <div className="movie_info">
           <h2 className="movie_title">{original_title}</h2>
+          <p className="movie_date">
+            {format(parseISO(release_date), "MMMM dd, yyyy")}
+          </p>
           <ul className="movie_genres">
             <li className="movie_genre">Action</li>
             <li className="movie_genre">Drama</li>

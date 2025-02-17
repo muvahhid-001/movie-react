@@ -11,3 +11,9 @@ main {
   width: 100%;
   background-color: #ffffff;
 }
+.ant-alert {
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}

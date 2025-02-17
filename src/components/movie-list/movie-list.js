@@ -3,7 +3,12 @@ import "./movie-list.css";
 
 const MovieList = ({ movies }) => {
   if (!movies || !movies.results) {
-    return <p>Loading...</p>;
+    return (
+      <div className="loading_div">
+        <p className="loading">Loading...</p>
+        <p className="loading_warn">Maybe: Vpn no connect!</p>
+      </div>
+    );
   }
   return (
     <ul className="movie_list">

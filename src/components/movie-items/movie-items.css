@@ -33,3 +33,16 @@ img {
   color: #827e7e;
   font-size: 14px;
 }
+.movie_genres {
+  display: flex;
+  padding: 0;
+  font-size: 12.5px;
+  gap: 10px;
+}
+.movie_genre {
+  list-style: none;
+  color: rgba(0, 0, 0, 0.67);
+  border: 1.5px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  padding: 2px 5px;
+}

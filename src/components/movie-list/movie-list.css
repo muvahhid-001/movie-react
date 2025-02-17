@@ -5,3 +5,11 @@
   gap: 30px;
   flex-wrap: wrap;
 }
+.loading {
+  text-align: center;
+  color: rgb(126, 126, 126);
+}
+.loading_warn {
+  text-align: center;
+  color: rgba(205, 208, 0, 0.379);
+}

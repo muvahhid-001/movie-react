@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "date-fns": "^4.1.0",
     "react": "^19.0.0",
+    "react-detect-offline": "^2.4.5",
     "react-dom": "^19.0.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
@@ -22,13 +23,6 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx}": [
-      "eslint --fix",
-      "prettier --write",
-      "git add"
-    ]
   },
   "eslintConfig": {
     "extends": [
@@ -56,7 +50,7 @@
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.3",
-    "husky": "^9.1.7",
+    "husky": "^8.0.0",
     "lint-staged": "^15.4.3",
     "prettier": "^3.5.1"
   }

@@ -7,6 +7,7 @@ img {
   width: 446px;
   padding-right: 15px;
   height: 279px;
+  transition: 0.3s;
   box-shadow: 2px 0 10px rgba(83, 82, 82, 0.5);
   list-style: none;
 }
@@ -19,6 +20,7 @@ img {
   display: -webkit-box;
   -webkit-line-clamp: 5;
   line-clamp: 5;
+  margin-top: 10px;
   -webkit-box-orient: vertical;
   overflow: hidden;
   width: 228px;
@@ -28,10 +30,13 @@ img {
 }
 .movie_title {
   font-size: 22px;
+  margin-bottom: 5px;
 }
 .movie_date {
   color: #827e7e;
   font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 8px;
 }
 .movie_genres {
   display: flex;
@@ -45,4 +50,7 @@ img {
   border: 1.5px solid rgba(0, 0, 0, 0.3);
   border-radius: 3px;
   padding: 2px 5px;
+}
+.movie_items:hover {
+  box-shadow: 2px 0 10px rgba(0, 157, 255, 0.5);
 }

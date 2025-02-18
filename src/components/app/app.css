@@ -1,13 +1,14 @@
 body {
   background-color: #e0e0e0;
   margin: 0;
+  padding: 0 30px;
   font-family: "Inter", sans-serif;
 }
 main {
   max-width: 1060px;
+  padding-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
-  padding: 10px;
   width: 100%;
   background-color: #ffffff;
 }

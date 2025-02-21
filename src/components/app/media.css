@@ -1,4 +1,7 @@
-@media (max-width: 1050px) {
+@media (max-width: 1111px) {
+  .movie_list {
+    justify-content: center;
+  }
   .search_input {
     width: 600px;
   }

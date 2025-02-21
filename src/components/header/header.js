@@ -1,6 +1,6 @@
 import SearchFilm from "../search-input/search-input";
 import "./header.css";
-const Header = () => {
+const Header = ({ inputChange }) => {
   return (
     <header>
       <div className="header_components">
@@ -8,7 +8,7 @@ const Header = () => {
           <button className="button_search active_button">Search</button>
           <button className="button_rated">Rated</button>
         </div>
-        <SearchFilm />
+        <SearchFilm inputChange={inputChange} />
       </div>
     </header>
   );

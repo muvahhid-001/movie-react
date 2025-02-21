@@ -1,8 +1,12 @@
 import "./search-input.css";
 
-const SearchFilm = () => {
+const SearchFilm = ({ inputChange }) => {
   return (
-    <input className="search_input" placeholder="Type to search..."></input>
+    <input
+      className="search_input"
+      placeholder="Type to search..."
+      onChange={inputChange}
+    ></input>
   );
 };
 

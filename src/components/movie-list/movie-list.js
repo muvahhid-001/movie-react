@@ -4,11 +4,13 @@ import { Alert } from "antd";
 import "./movie-list.css";
 
 const MovieList = ({ movies, error }) => {
+  console.log(movies);
+
   if (error.status) {
     return (
       <Alert
         message="Error"
-        description={error.message.error.message}
+        description={error.message}
         type="error"
         showIcon
       />

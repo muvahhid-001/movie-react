@@ -22,3 +22,10 @@ button.active_button {
   margin-bottom: 27px;
   gap: 10px;
 }
+header {
+  max-width: 1060px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  background-color: #ffffff;
+}

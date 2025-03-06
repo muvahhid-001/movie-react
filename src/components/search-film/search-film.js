@@ -1,4 +1,4 @@
-import "./search-input.css";
+import "./search-film.css";
 
 const SearchFilm = ({ inputChange }) => {
   return (

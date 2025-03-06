@@ -21,16 +21,22 @@ img {
   -webkit-line-clamp: 5;
   line-clamp: 5;
   margin-top: 10px;
+  margin-bottom: 10px;
   -webkit-box-orient: vertical;
   overflow: hidden;
   width: 228px;
   text-overflow: ellipsis;
   line-height: 22px;
-  max-height: calc(22px * 8);
+  height: 130px;
 }
 .movie_title {
   font-size: 22px;
   margin-bottom: 5px;
+  width: 190px;
+  height: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .movie_date {
   color: #827e7e;
@@ -53,4 +59,25 @@ img {
 }
 .movie_items:hover {
   box-shadow: 2px 0 10px rgba(0, 157, 255, 0.5);
+}
+.ant-rate {
+  display: flex;
+}
+.ant-rate-star {
+  margin-right: 5px !important;
+}
+li {
+  position: relative;
+}
+
+.movie_circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 35px;
+  height: 35px;
+  top: 10px;
+  right: 10px;
+  border-radius: 50%;
 }

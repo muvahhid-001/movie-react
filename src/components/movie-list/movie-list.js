@@ -3,10 +3,8 @@ import SpinLoad from "../spin/spin";
 import { Alert } from "antd";
 import "./movie-list.css";
 
-const MovieList = ({ movies, error }) => {
-  console.log(movies);
-
-  if (error.status) {
+const MovieList = ({ movies, error, addRating }) => {
+  if (error.status)
     return (
       <Alert
         message="Error"
@@ -15,14 +13,11 @@ const MovieList = ({ movies, error }) => {
         showIcon
       />
     );
-  }
-  if (!movies || !movies.results) {
-    return <SpinLoad />;
-  }
+  if (!movies || !movies.results) return <SpinLoad />;
   return (
     <ul className="movie_list">
       {movies.results.map((movie) => (
-        <MovieItems key={movie.id} movie={movie} />
+        <MovieItems key={movie.id} movie={movie} addRating={addRating} />
       ))}
     </ul>
   );

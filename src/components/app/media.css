@@ -6,9 +6,17 @@
     width: 600px;
   }
 }
+@media (max-width: 1000px) {
+  .ant-alert {
+    max-width: 550px !important;
+  }
+}
 @media (max-width: 720px) {
   .search_input {
     width: 388px;
+  }
+  .ant-alert {
+    max-width: 320px !important;
   }
   .movie_items {
     width: 388px;
@@ -62,5 +70,8 @@
   .search_input {
     width: 240px;
     height: 30px;
+  }
+  .ant-alert {
+    max-width: 270px !important;
   }
 }

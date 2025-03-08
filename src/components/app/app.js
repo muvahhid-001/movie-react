@@ -168,6 +168,7 @@ class App extends Component {
       headers: { accept: "application/json" },
     })
       .then((response) => {
+        if (response.status === 404) throw new Error(`Ошибка: Ошибка сервера!`);
         if (!response.ok) throw new Error(`Ошибка: ${response.status}`);
         return response.json();
       })
@@ -256,6 +257,7 @@ class App extends Component {
               current={this.state.pages}
               total={total}
               pageSize={20}
+              showSizeChanger={false}
               onChange={this.currentPage}
             />
           </Online>

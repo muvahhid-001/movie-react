@@ -4,3 +4,8 @@
   margin-left: auto;
   margin-right: auto;
 }
+@media (max-width: 400px) {
+  .ant-spin {
+    margin-top: 20px !important;
+  }
+}

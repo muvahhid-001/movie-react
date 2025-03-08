@@ -74,4 +74,7 @@
   .ant-alert {
     max-width: 270px !important;
   }
+  body {
+    padding: 0 5px !important;
+  }
 }

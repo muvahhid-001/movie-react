@@ -1,4 +1,4 @@
-import { format, parseISO } from "date-fns";
+import { format, parseISO, isValid } from "date-fns";
 import { Rate } from "antd";
 import { GhostSessions } from "../ghost-sessions/ghost-sessions-provider";
 import "./movie-items.css";
@@ -48,6 +48,11 @@ const MovieItems = ({ movie = [], addRating = () => {} }) => {
     border: `4px solid ${ifRating(vote_average)}`,
   };
 
+  const formattedDate =
+    release_date && isValid(parseISO(release_date))
+      ? format(parseISO(release_date), "MMMM dd, yyyy")
+      : "Дата неизвестна";
+
   return (
     <li className="movie_items" key={id}>
       <div className="movie_circle" style={circleStyle}>
@@ -61,12 +66,7 @@ const MovieItems = ({ movie = [], addRating = () => {} }) => {
         />
         <div className="movie_info">
           <h2 className="movie_title">{original_title}</h2>
-          <p className="movie_date">
-            {release_date
-              ? format(parseISO(release_date), "MMMM dd, yyyy")
-              : "Дата неизвестна"}
-          </p>
-
+          <p className="movie_date">{formattedDate}</p>
           <ul className="movie_genres">
             {genre_ids.slice(0, 3).map((id) =>
               genre[id] ? (
@@ -76,7 +76,6 @@ const MovieItems = ({ movie = [], addRating = () => {} }) => {
               ) : null,
             )}
           </ul>
-
           <p className="movie_p">{overview}</p>
           <GhostSessions.Consumer>
             {(value) =>

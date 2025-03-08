@@ -24,17 +24,12 @@ class App extends Component {
   };
 
   componentDidCatch(error, info) {
-    this.setState({
-      error: {
-        status: true,
-        message: error.toString(),
-      },
-    });
+    this.setState({ error: { status: true, message: error.toString() } });
     console.error("Error caught:", error, info);
   }
 
   debounceTime = debounce((value) => {
-    this.searchMovieName(value);
+    this.searchMovieName(value, 1);
   }, 400);
 
   handleInputChange = (event) => {
@@ -42,7 +37,7 @@ class App extends Component {
     if (this.state.error.status) {
       this.setState({ error: { status: false, message: "" } });
     }
-    this.setState({ inputTarget: value });
+    this.setState({ inputTarget: value, pages: 1 });
     if (value.trim() === "") {
       this.debounceTime.cancel();
       this.getData(1);
@@ -66,6 +61,8 @@ class App extends Component {
           message:
             "Поиск не дал результатов, проверьте наличие ошибки в контексте.",
         },
+        loading: false,
+        movies: { results: [] },
       });
     }
     const searchRes = result.results.filter(
@@ -75,18 +72,23 @@ class App extends Component {
         movie.original_title &&
         movie.overview &&
         movie.release_date &&
-        movie.release_date !== "",
+        movie.release_date.trim() !== "",
     );
     this.setState({
       movies: { results: this.mergeRatings(searchRes) },
       totalSearch: result.total_results,
+      loading: false,
     });
   };
 
   currentPage = (page) => {
     this.setState({ pages: page }, () => {
       if (this.state.activeTab === 1) {
-        this.getData(page);
+        if (this.state.inputTarget.trim() !== "") {
+          this.searchMovieName(this.state.inputTarget, page);
+        } else {
+          this.getData(page);
+        }
       } else {
         this.getRatedFilm(page);
       }
@@ -98,7 +100,11 @@ class App extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.pages !== this.state.pages && this.state.activeTab === 1) {
+    if (
+      prevState.pages !== this.state.pages &&
+      this.state.activeTab === 1 &&
+      this.state.inputTarget.trim() === ""
+    ) {
       this.getData(this.state.pages);
       this.setState({ error: { status: false, message: "" } });
     }
@@ -147,15 +153,14 @@ class App extends Component {
     });
   };
 
-  searchMovieName = async (target) => {
+  searchMovieName = async (target, page) => {
     const apiKey = "8a74095a49acc27584f15a7119a0649f";
     this.setState({ loading: true });
     const response = await fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${target}&language=en-US&page=1&api_key=${apiKey}`,
+      `https://api.themoviedb.org/3/search/movie?query=${target}&language=en-US&page=${page}&api_key=${apiKey}`,
     );
     const result = await response.json();
     this.filterMovie(result);
-    this.setState({ loading: false });
   };
 
   getData = (
@@ -168,7 +173,7 @@ class App extends Component {
       headers: { accept: "application/json" },
     })
       .then((response) => {
-        if (response.status === 404) throw new Error(`Ошибка: Ошибка сервера!`);
+        if (response.status === 404) throw new Error("Ошибка: Ошибка сервера!");
         if (!response.ok) throw new Error(`Ошибка: ${response.status}`);
         return response.json();
       })
@@ -256,7 +261,7 @@ class App extends Component {
             <Pagination
               current={this.state.pages}
               total={total}
-              pageSize={20}
+              pageSize={pageSize}
               showSizeChanger={false}
               onChange={this.currentPage}
             />

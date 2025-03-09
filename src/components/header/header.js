@@ -1,7 +1,12 @@
 import SearchFilm from "../search-film/search-film";
+import PropTypes from "prop-types";
 import "./header.css";
 
-const Header = ({ inputChange, changeTab, tabValue }) => (
+const Header = ({
+  inputChange = () => {},
+  changeTab = () => {},
+  tabValue = 1,
+}) => (
   <header>
     <div className="header_components">
       <div className="buttons">
@@ -22,5 +27,11 @@ const Header = ({ inputChange, changeTab, tabValue }) => (
     </div>
   </header>
 );
+
+Header.propTypes = {
+  inputChange: PropTypes.func,
+  changeTab: PropTypes.func,
+  tabValue: PropTypes.number,
+};
 
 export default Header;

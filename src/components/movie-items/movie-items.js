@@ -1,5 +1,6 @@
 import { format, parseISO, isValid } from "date-fns";
 import { Rate } from "antd";
+import PropTypes from "prop-types";
 import { GhostSessions } from "../ghost-sessions/ghost-sessions-provider";
 import "./movie-items.css";
 
@@ -10,7 +11,7 @@ const ifRating = (rating) => {
   return "#66E900";
 };
 
-const MovieItems = ({ movie = [], addRating = () => {} }) => {
+const MovieItems = ({ movie = [], addRating = () => {}, activeTab = 1 }) => {
   const {
     id,
     backdrop_path,
@@ -60,7 +61,11 @@ const MovieItems = ({ movie = [], addRating = () => {} }) => {
       </div>
       <div className="items_div">
         <img
-          src={`https://image.tmdb.org/t/p/original/${backdrop_path}`}
+          src={
+            !backdrop_path || backdrop_path.endsWith("null")
+              ? "./null.png"
+              : `https://image.tmdb.org/t/p/original/${backdrop_path}`
+          }
           alt={original_title}
           className="movie_img"
         />
@@ -83,11 +88,11 @@ const MovieItems = ({ movie = [], addRating = () => {} }) => {
                 <Rate
                   onChange={(count) => {
                     addRating(count, movie);
-                    localStorage.setItem(`localRating_${id}`, count);
                   }}
                   value={localStorage.getItem(`localRating_${id}`) || rating}
                   count={10}
                   size="small"
+                  disabled={activeTab === 2}
                 />
               ) : null
             }
@@ -96,6 +101,21 @@ const MovieItems = ({ movie = [], addRating = () => {} }) => {
       </div>
     </li>
   );
+};
+
+MovieItems.propTypes = {
+  movie: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    backdrop_path: PropTypes.string,
+    original_title: PropTypes.string.isRequired,
+    overview: PropTypes.string,
+    release_date: PropTypes.string,
+    rating: PropTypes.number,
+    genre_ids: PropTypes.arrayOf(PropTypes.number).isRequired,
+    vote_average: PropTypes.number.isRequired,
+  }),
+  addRating: PropTypes.func,
+  activeTab: PropTypes.number,
 };
 
 export default MovieItems;

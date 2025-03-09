@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import "./search-film.css";
 
 const SearchFilm = ({ inputChange }) => {
@@ -8,6 +9,10 @@ const SearchFilm = ({ inputChange }) => {
       onChange={inputChange}
     ></input>
   );
+};
+
+SearchFilm.propTypes = {
+  inputChange: PropTypes.func.isRequired,
 };
 
 export default SearchFilm;

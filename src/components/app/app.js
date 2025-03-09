@@ -1,4 +1,5 @@
 import { Component } from "react";
+import PropTypes from "prop-types";
 import { Offline, Online } from "react-detect-offline";
 import { Pagination, Alert } from "antd";
 import { debounce } from "lodash";
@@ -251,6 +252,7 @@ class App extends Component {
           <Online>
             {this.state.loading === false ? (
               <MovieList
+                activeTab={this.state.activeTab}
                 movies={this.state.movies}
                 error={this.state.error}
                 addRating={this.addRating}
@@ -279,5 +281,32 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  movies: PropTypes.array,
+  loading: PropTypes.bool,
+  error: PropTypes.shape({
+    status: PropTypes.bool,
+    message: PropTypes.string,
+  }),
+  activeTab: PropTypes.number,
+  pages: PropTypes.number,
+  inputTarget: PropTypes.string,
+  session: PropTypes.object,
+  ratedMovies: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      backdrop_path: PropTypes.string,
+      original_title: PropTypes.string.isRequired,
+      overview: PropTypes.string,
+      release_date: PropTypes.string,
+      rating: PropTypes.number,
+      genre_ids: PropTypes.arrayOf(PropTypes.number),
+      vote_average: PropTypes.number,
+    }),
+  ),
+  totalSearch: PropTypes.number,
+  totalRated: PropTypes.number,
+};
 
 export default App;

@@ -4,6 +4,7 @@ img {
   object-fit: cover;
 }
 .movie_items {
+  cursor: pointer;
   width: 446px;
   padding-right: 15px;
   height: 279px;

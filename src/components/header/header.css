@@ -23,6 +23,7 @@ button.active_button {
   gap: 10px;
 }
 header {
+  cursor: pointer;
   max-width: 1060px;
   margin-left: auto;
   margin-right: auto;

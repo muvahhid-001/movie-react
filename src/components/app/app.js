@@ -7,6 +7,7 @@ import MovieList from "../movie-list/movie-list";
 import Header from "../header/header";
 import { GhostSessionsProvider } from "../ghost-sessions/ghost-sessions-provider";
 import SpinLoad from "../spin/spin";
+import ApiService from "../api-service/api-service";
 import "./media.css";
 import "./app.css";
 
@@ -39,11 +40,13 @@ class App extends Component {
       this.setState({ error: { status: false, message: "" } });
     }
     this.setState({ inputTarget: value, pages: 1 });
+
     if (value.trim() === "") {
       this.debounceTime.cancel();
-      this.getData(1);
+      this.searchMovieName("", 1);
       return;
     }
+
     this.setState({ loading: true });
     this.debounceTime(value);
   };
@@ -55,26 +58,26 @@ class App extends Component {
     });
 
   filterMovie = (result) => {
-    if (result.results.length < 1) {
+    if (!result.results.length) {
       return this.setState({
         error: {
           status: true,
-          message:
-            "Поиск не дал результатов, проверьте наличие ошибки в контексте.",
+          message: "Поиск не дал результатов, проверьте название фильма.",
         },
         loading: false,
         movies: { results: [] },
       });
     }
+
     const searchRes = result.results.filter(
       (movie) =>
         movie.id &&
         movie.backdrop_path &&
         movie.original_title &&
         movie.overview &&
-        movie.release_date &&
-        movie.release_date.trim() !== "",
+        movie.release_date?.trim(),
     );
+
     this.setState({
       movies: { results: this.mergeRatings(searchRes) },
       totalSearch: result.total_results,
@@ -85,67 +88,58 @@ class App extends Component {
   currentPage = (page) => {
     this.setState({ pages: page }, () => {
       if (this.state.activeTab === 1) {
-        if (this.state.inputTarget.trim() !== "") {
-          this.searchMovieName(this.state.inputTarget, page);
-        } else {
-          this.getData(page);
-        }
+        this.searchMovieName(this.state.inputTarget, page);
       } else {
         this.getRatedFilm(page);
       }
-      const header = document.querySelector("header");
-      if (header) {
-        header.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
+
+      document
+        .querySelector("header")
+        ?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
   };
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      prevState.pages !== this.state.pages &&
-      this.state.activeTab === 1 &&
-      this.state.inputTarget.trim() === ""
-    ) {
-      this.getData(this.state.pages);
-      this.setState({ error: { status: false, message: "" } });
-    }
-  }
 
   componentDidMount() {
     const savedRatedMovies = JSON.parse(
       localStorage.getItem("ratedMovies") || "[]",
     );
+
     this.setState(
       { ratedMovies: savedRatedMovies, totalRated: savedRatedMovies.length },
-      () => {
-        this.getData(1);
-      },
+      () => this.searchMovieName("", 1),
     );
+
     let sessionId = localStorage.getItem("id");
     if (!sessionId) {
       sessionId = Math.random().toString(36).substr(2, 9);
       localStorage.setItem("id", sessionId);
     }
+
     this.setState({ session: { guest_session_id: sessionId } });
   }
 
   addRating = (rating, movie) => {
     const ratedMovie = { ...movie, rating };
+
     this.setState((prevState) => {
       const ratedMovies = [...prevState.ratedMovies];
       const existingIndex = ratedMovies.findIndex((m) => m.id === movie.id);
+
       if (existingIndex !== -1) {
         ratedMovies[existingIndex] = ratedMovie;
       } else {
         ratedMovies.push(ratedMovie);
       }
+
       let updatedMovies = { ...prevState.movies };
       if (updatedMovies.results) {
         updatedMovies.results = updatedMovies.results.map((m) =>
           m.id === movie.id ? ratedMovie : m,
         );
       }
+
       localStorage.setItem("ratedMovies", JSON.stringify(ratedMovies));
+
       return {
         ratedMovies,
         movies: updatedMovies,
@@ -154,44 +148,18 @@ class App extends Component {
     });
   };
 
-  searchMovieName = async (target, page) => {
-    const apiKey = "8a74095a49acc27584f15a7119a0649f";
+  searchMovieName = async (target = "", page = 1) => {
     this.setState({ loading: true });
-    const response = await fetch(
-      `https://api.themoviedb.org/3/search/movie?query=${target}&language=en-US&page=${page}&api_key=${apiKey}`,
-    );
-    const result = await response.json();
-    this.filterMovie(result);
-  };
 
-  getData = (
-    page,
-    url = "https://api.themoviedb.org/3/movie/popular?api_key=8a74095a49acc27584f15a7119a0649f&language=en-US&page=",
-  ) => {
-    this.setState({ loading: true });
-    fetch(`${url}${page}`, {
-      method: "GET",
-      headers: { accept: "application/json" },
-    })
-      .then((response) => {
-        if (response.status === 404) throw new Error("Ошибка: Ошибка сервера!");
-        if (!response.ok) throw new Error(`Ошибка: ${response.status}`);
-        return response.json();
-      })
-      .then((data) => {
-        data.results = this.mergeRatings(data.results);
-        this.setState({
-          movies: data,
-          loading: false,
-          totalSearch: data.total_results,
-        });
-      })
-      .catch((error) => {
-        this.setState({
-          error: { status: true, message: error.message },
-          loading: false,
-        });
+    try {
+      const result = await ApiService.searchMovie(target || "return", page);
+      this.filterMovie(result);
+    } catch (error) {
+      this.setState({
+        error: { status: true, message: error.message },
+        loading: false,
       });
+    }
   };
 
   changeTab = (newTab) => {
@@ -206,7 +174,7 @@ class App extends Component {
         if (newTab === 2) {
           this.getRatedFilm(1);
         } else {
-          this.getData(1);
+          this.searchMovieName("", 1);
         }
       },
     );
@@ -216,7 +184,8 @@ class App extends Component {
     const perPage = 20;
     const { ratedMovies } = this.state;
     const totalRated = ratedMovies.length;
-    if (totalRated === 0) {
+
+    if (!totalRated) {
       this.setState({
         movies: { results: [] },
         loading: false,
@@ -225,8 +194,10 @@ class App extends Component {
       });
       return;
     }
+
     const start = (page - 1) * perPage;
     const pagedMovies = ratedMovies.slice(start, start + perPage);
+
     this.setState({
       movies: { results: pagedMovies },
       loading: false,
@@ -241,6 +212,7 @@ class App extends Component {
       this.state.activeTab === 1
         ? Math.min(this.state.totalSearch, 400 * pageSize)
         : this.state.totalRated;
+
     return (
       <GhostSessionsProvider>
         <Header
@@ -250,7 +222,7 @@ class App extends Component {
         />
         <main>
           <Online>
-            {this.state.loading === false ? (
+            {!this.state.loading ? (
               <MovieList
                 activeTab={this.state.activeTab}
                 movies={this.state.movies}
